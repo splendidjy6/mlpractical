@@ -155,8 +155,8 @@ class ExperimentBuilder(nn.Module):
         """
         for name, value in named_parameters:
             if 'weight' in name:
-                value = np.abs(value.grad)
-                mean = value.mean()
+                value = torch.abs(value.grad)
+                mean = torch.mean(value)
                 all_grads.append(mean)
                 if 'logit' in name:
                     layers.append('weight_logit_linear_layer ')
