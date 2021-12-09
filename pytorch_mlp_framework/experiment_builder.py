@@ -153,10 +153,18 @@ class ExperimentBuilder(nn.Module):
         """
         Complete the code in the block below to collect absolute mean of the gradients for each layer in all_grads with the             layer names in layers.
         """
-        ########################################
-        
-        
-        ########################################
+        for name, value in named_parameters:
+            if 'weight' in name:
+                value = np.abs(value.grad)
+                mean = value.mean()
+                all_grads.append(mean)
+                if 'logit' in name:
+                    layers.append('weight_logit_linear_layer ')
+                else:
+                    name1 = name.replace('layer_dict.',' ')
+                    name2 = name1.replace('.weight', ' ')
+                    name3 = name2.replace('.','_')
+                    layers.append(name3)
             
         
         plt = self.plot_func_def(all_grads, layers)
